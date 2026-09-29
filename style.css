@@ -1,0 +1,401 @@
+/* =========================================================
+   1. DESIGN TOKENS
+   ✏️ EDIT: change these colors and fonts to restyle the whole site
+   ========================================================= */
+:root {
+  --bg: #f4f6fb;          /* page background */
+  --surface: #ffffff;     /* cards */
+  --text: #1b2338;        /* main text */
+  --muted: #5c6580;       /* secondary text */
+  --accent: #3552f5;      /* buttons, links, highlights */
+  --accent-soft: #e3e8ff; /* pills, light accent backgrounds */
+  --border: #dde2f0;
+
+  --font-heading: "Sora", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --radius: 14px;
+}
+
+/* =========================================================
+   2. RESET + BASE
+   ========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;  /* padding and border are included in width */
+}
+
+html {
+  scroll-behavior: smooth;  /* smooth jump when clicking nav links */
+  scroll-padding-top: 80px; /* stops the sticky navbar from covering headings */
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+img { max-width: 100%; display: block; }
+ul, ol { list-style: none; }
+a { color: var(--accent); text-decoration: none; }
+
+h1, h2, h3 { font-family: var(--font-heading); line-height: 1.2; }
+
+/* Keeps content centered and not too wide */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section { padding-top: 80px; }
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 32px;
+}
+
+/* =========================================================
+   3. BUTTONS + PILLS (reused everywhere)
+   ========================================================= */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: 700 1rem var(--font-body);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* TRANSITION */
+}
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(53, 82, 245, 0.3);
+}
+.btn-outline { background: transparent; color: var(--accent); }
+.btn-small { padding: 8px 18px; font-size: 0.9rem; }
+
+.pills {
+  display: flex;      /* FLEXBOX */
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pills li {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* =========================================================
+   4. NAVBAR (sticky + flexbox)
+   ========================================================= */
+.navbar {
+  position: sticky;   /* POSITIONING: stays at top while scrolling */
+  top: 0;
+  z-index: 100;       /* keeps navbar above everything else */
+  background: rgba(244, 246, 251, 0.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+
+.nav-inner {
+  display: flex;                    /* FLEXBOX */
+  justify-content: space-between;   /* logo left, links middle, button right */
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+}
+
+.logo {
+  font: 800 1.4rem var(--font-heading);
+  color: var(--text);
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+.nav-links a {
+  position: relative;
+  color: var(--text);
+  font-weight: 500;
+}
+/* Underline that grows on hover: absolute inside relative parent */
+.nav-links a::after {
+  content: "";
+  position: absolute;   /* POSITIONING */
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* =========================================================
+   5. HERO (flexbox split layout)
+   ========================================================= */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  min-height: calc(100vh - 64px);
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.hero-text { flex: 1; animation: fadeUp 0.8s ease both; } /* ANIMATION */
+
+.hero-hello { color: var(--muted); font-size: 1.2rem; }
+.hero h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); }   /* text scales with screen */
+.hero-role {
+  margin: 8px 0 20px;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  color: var(--accent);
+}
+.hero-intro { max-width: 480px; margin-bottom: 32px; color: var(--muted); font-size: 1.1rem; }
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 16px; }
+
+.hero-image {
+  position: relative;   /* parent for the offset shape below */
+  flex: 0 0 340px;
+  animation: float 5s ease-in-out infinite;   /* ANIMATION: keeps floating */
+}
+.hero-image::before {
+  content: "";
+  position: absolute;   /* shape sits behind the photo */
+  inset: 20px -20px -20px 20px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  z-index: 0;
+}
+.hero-image img {
+  position: relative;
+  z-index: 1;           /* photo sits above the shape */
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 4px solid var(--surface);
+}
+
+/* Keyframe animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+/* =========================================================
+   6. ABOUT (grid)
+   ========================================================= */
+.about-grid {
+  display: grid;                      /* GRID */
+  grid-template-columns: 2fr 1fr;     /* text takes 2 parts, facts take 1 */
+  gap: 32px;
+  align-items: start;
+}
+.about-text p { margin-bottom: 16px; max-width: 60ch; }
+
+.facts {
+  display: grid;
+  gap: 12px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.facts strong { display: block; font-size: 0.85rem; color: var(--muted); }
+
+/* =========================================================
+   7. SKILLS (grid)
+   ========================================================= */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* 3 equal columns */
+  gap: 24px;
+}
+.skill-card {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.skill-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+.skill-card h3 { margin-bottom: 16px; font-size: 1.1rem; }
+
+/* =========================================================
+   8. PROJECTS (grid)
+   ========================================================= */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); /* auto-adjusts columns */
+  gap: 28px;
+}
+.project-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;   /* clips the image to the rounded corners */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(27, 35, 56, 0.12);
+}
+.project-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.project-card:hover img { transform: scale(1.05); }   /* image zoom */
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;             /* body fills the card so all cards end evenly */
+  gap: 12px;
+  padding: 20px;
+}
+.project-body p { color: var(--muted); font-size: 0.95rem; }
+.project-links {
+  display: flex;
+  gap: 20px;
+  margin-top: auto;    /* pushes links to the bottom of the card */
+  font-weight: 700;
+}
+
+/* =========================================================
+   9. EDUCATION (timeline using positioning)
+   ========================================================= */
+.timeline {
+  position: relative;
+  max-width: 700px;
+  padding-left: 32px;
+  border-left: 2px solid var(--border);   /* the vertical line */
+}
+.timeline-item { position: relative; padding-bottom: 32px; }
+.timeline-item::before {
+  content: "";
+  position: absolute;    /* the dot on the line */
+  left: -41px;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+}
+.timeline-date { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+.timeline-item p:last-child { color: var(--muted); }
+
+/* =========================================================
+   10. CONTACT (grid + form)
+   ========================================================= */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+.contact-info p { margin-bottom: 20px; }
+.contact-links { display: grid; gap: 10px; font-weight: 500; }
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.contact-form label { font-weight: 700; font-size: 0.9rem; }
+.contact-form input,
+.contact-form textarea {
+  margin-bottom: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font: 1rem var(--font-body);
+  color: var(--text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.contact-form .btn { align-self: flex-start; margin-top: 8px; }
+
+/* =========================================================
+   11. FOOTER
+   ========================================================= */
+.footer {
+  margin-top: 96px;
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-links { display: flex; gap: 20px; }
+
+/* Visible keyboard focus for accessibility */
+a:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Respect users who turn off animations in their OS */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* =========================================================
+   12. RESPONSIVE (media queries)
+   Desktop styles are above. These override them on smaller screens.
+   ========================================================= */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .hero-image { flex-basis: 260px; }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .nav-inner { flex-wrap: wrap; justify-content: center; padding-top: 10px; padding-bottom: 10px; }
+  .nav-links { order: 3; width: 100%; justify-content: center; gap: 16px; font-size: 0.9rem; }
+
+  .hero { flex-direction: column-reverse; text-align: center; min-height: auto; padding-top: 48px; }
+  .hero-intro { margin-left: auto; margin-right: auto; }
+  .hero-buttons { justify-content: center; }
+  .hero-image { flex-basis: auto; width: 240px; }
+
+  .about-grid,
+  .skills-grid,
+  .contact-grid { grid-template-columns: 1fr; }   /* stack everything in 1 column */
+
+  .section { padding-top: 56px; }
+  .footer-inner { justify-content: center; text-align: center; }
+}
